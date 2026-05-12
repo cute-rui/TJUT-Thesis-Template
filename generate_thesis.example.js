@@ -6,7 +6,7 @@ const {
   AlignmentType, HeadingLevel, PageNumber, PageBreak, LineRuleType,
   TableOfContents, TabStopType, TabStopPosition, LeaderType, ImageRun, Bookmark, SimpleField,
   Table, TableRow, TableCell, WidthType, BorderStyle,
-  Math: DocxMath, MathRun, MathSubScript, MathRadical
+  Math: DocxMath, MathRun, MathSubScript, MathRadical, MathSuperScript
 } = require("docx");
 
 const CM = (cm) => Math.round(cm * 567);
@@ -32,18 +32,18 @@ const GRADE_YEAR = "【年级】";
 const STUDENT_ID = "【学号】";
 const STUDENT_NAME = "【姓名】";
 const ADVISOR_NAME = "【指导教师】";
-const THESIS_YEAR = "【年份】";
+const THESIS_YEAR = "2026";
 const THESIS_MONTH = "【月份】";
 
-const THESIS_TITLE_CN = "【中文论文标题】";
+const THESIS_TITLE_CN = "基于Node.js的自动化论文排版系统设计与实现";
 const THESIS_TITLE_EN = [
-  "【English Thesis Title Part 1】",
-  "【English Thesis Title Part 2】"
+  "Design and Implementation of Automated Thesis Typesetting",
+  "System Based on Node.js"
 ];
-const ZH_ABSTRACT_TEXT = "【此处填写中文摘要】";
-const EN_ABSTRACT_TEXT = "【Here goes the English Abstract】";
-const ZH_KEYWORDS = "【关键词1】 【关键词2】 【关键词3】";
-const EN_KEYWORDS = "【Keyword1】; 【Keyword2】; 【Keyword3】";
+const ZH_ABSTRACT_TEXT = "随着信息技术的不断发展，文档自动化排版技术在学术界和工业界都发挥着越来越重要的作用。本文基于Node.js环境与docx第三方库，设计并实现了一套可复用的学位论文格式生成系统。本系统抽象出了论文排版中的标题、段落、图表、公式以及交叉引用等常见组件，使得使用者只需关注文本内容即可生成符合严格格式规范的Word文档。";
+const EN_ABSTRACT_TEXT = "With the continuous development of information technology, document automation typesetting plays an increasingly important role... This paper designs and implements a reusable formatting system based on Node.js and the docx library.";
+const ZH_KEYWORDS = "Node.js 自动化排版 docx 模板生成";
+const EN_KEYWORDS = "Node.js; Automated Typesetting; docx; Template";
 
 // 如果需要自动生成图表，配置脚本路径和资源
 const VSDX_DIR = "F:/论文/vsdx"; // 请根据需要修改
@@ -351,8 +351,11 @@ function referenceParagraph(text) {
 }
 
 const REFERENCES = [
-  // "[1] 示例参考文献1",
-  // "[2] 示例参考文献2",
+  "[1] 张三. Node.js高级编程[M]. 北京: 电子工业出版社, 2021: 45-50.",
+  "[2] 李四. 自动化文档排版技术研究[J]. 计算机应用, 2022, 42(3): 123-128.",
+  "[3] 王五, 赵六. 前端工程化实践[M]. 杭州: 浙江大学出版社, 2023: 12-15.",
+  "[4] 陈七. 基于云原生的在线排版平台架构[J]. 软件导刊, 2020, 19(5): 99-102.",
+  "[5] 刘八. Web技术与应用[M]. 上海: 上海交通大学出版社, 2019: 88-90."
 ];
 
 function tableText(text, opts = {}) {
@@ -496,24 +499,70 @@ const enAbstract = [
 // ===== 目录 =====
 const toc = [
   pb(),
-  new Paragraph({
-    alignment: AlignmentType.CENTER, spacing: { before: 480, after: 480, line: 300 },
-    children: [new TextRun({ text: "目    录", font: HEITI, size: SAN_HAO, bold: true })]
-  }),
-  blankLine(XIAO_WU),
-  blankLine(XIAO_WU),
+  p("目    录", { alignment: AlignmentType.CENTER, font: HEITI, size: SAN_HAO, bold: true, spacing: { before: 480, after: 480, line: 300 } }),
+  blankLine(XIAO_SI),
   new TableOfContents("", { hyperlink: true, headingStyleRange: "1-3" }),
 ];
 
 // ===== 第1章 示例章节 =====
+const kitaKitaGifPath = path.join(__dirname, "图", "喜多喜多.gif");
+
+function kitaKitaFigure() {
+  return [
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { before: 240, after: 120, line: 360 },
+      children: [
+        new ImageRun({
+          type: "gif",
+          data: fs.readFileSync(kitaKitaGifPath),
+          transformation: { width: 262, height: 258 }
+        })
+      ]
+    }),
+    new Paragraph({
+      alignment: AlignmentType.CENTER,
+      spacing: { before: 0, after: 240, line: 360 },
+      children: [new TextRun({ text: "图1.1 喜多喜多示例图", font: SONGTI, size: XIAO_SI })]
+    }),
+  ];
+}
+
 const ch1 = [
-  h1("第一章  【第一章标题】"),
-  h2("1.1 【节标题】"),
-  p("【此处填写段落内容】"),
-  h3("1.1.1 【小节标题】"),
-  p("【此处填写小节内容】"),
-  // placeholderTable("1.1", "示例表格", ["列1", "列2"], [["数据1", "数据2"]], { columnWidths: [CM(5), CM(5)] }),
-  // figure("1.1", "示例图表", { width: 400, height: 300 }),
+  h1("第一章  绪论"),
+  h2("1.1 研究背景"),
+  p("毕业论文排版往往消耗学生大量的时间，且经常因为格式不符合标准而被退回修改。传统的手动排版方式不仅效率低下，而且容易出错。"),
+  h3("1.1.1 自动化排版的现状"),
+  p("目前市面上已经存在部分基于LaTeX的排版工具，但在部分高校中，仍强制要求提交Microsoft Word格式的文档。因此，基于Node.js直接生成Word文档成为了一种可行的替代方案。"),
+
+  h2("1.2 相关技术与公式示例"),
+  p("在科学研究中，经常需要书写复杂的数学公式。基于本系统提供的辅助函数，可以轻松实现带编号的公式行："),
+  // 公式示例： E = mc^2
+  equationLine([m("E"), m("="), m("m"), m("c"), new MathSuperScript({ children: [m("2")] })], "1-1"),
+
+  h2("1.3 图片插入示例"),
+  p("本节演示如何在论文正文中插入位于图文件夹下的GIF图片。示例图片见图1.1。"),
+  ...kitaKitaFigure(),
+
+  h2("1.4 系统需求与表格示例"),
+  p("本系统支持动态生成标准的三线表。以下为简化的系统需求分析列表，见表1.1。"),
+  // 表格示例
+  ...placeholderTable("1.1", "系统功能需求表", ["需求编号", "需求名称", "优先级"], [
+    ["REQ-01", "生成标准段落", "高"],
+    ["REQ-02", "渲染数学公式", "中"],
+    ["REQ-03", "自动化生成三线表", "高"]
+  ], { columnWidths: [CM(4), CM(6), CM(4)] }),
+
+  h2("1.5 交叉引用示例"),
+  pRuns([
+    new TextRun({ text: "在学术写作中，交叉引用参考文献是必不可少的。为了确保论文格式的严谨性，本文系统可以方便地生成单个引用标记", font: SONGTI, size: XIAO_SI }),
+    ...citationChildren("1"),
+    new TextRun({ text: "。例如，如果需要引用多个相关的文献，系统同样支持生成两个连续或者不连续的引用编号", font: SONGTI, size: XIAO_SI }),
+    ...citationChildren(["2", "3"]),
+    new TextRun({ text: "，甚至能够一次性引用三个以上的文献来源", font: SONGTI, size: XIAO_SI }),
+    ...citationChildren(["1", "4", "5"]),
+    new TextRun({ text: "，所有的编号均采用上标格式并自动关联书签，极大地减轻了人工排版的工作量。", font: SONGTI, size: XIAO_SI })
+  ]),
 ];
 
 // ===== 参考文献 =====
@@ -528,8 +577,7 @@ const referencesSection = [
 const thanks = [
   pb(),
   h1("致    谢"),
-  p("本论文的完成得益于各方的关心与支持。在此，我谨向所有给予我指导和帮助的人表达最诚挚的感谢。", { firstLine: 0, alignment: AlignmentType.LEFT }),
-  p("【致谢内容】"),
+  p("大学四年时光转瞬即逝，在此我由衷地感谢我的指导老师、我的家人以及所有关心和帮助过我的人。"),
 ];
 
 const JSZip = require("jszip");
@@ -605,7 +653,7 @@ async function buildThesis(options) {
     thanks = [],
     universityName = UNIVERSITY_NAME,
     thesisYear = THESIS_YEAR,
-    outputPath = process.env.THESIS_OUTPUT || "f:/论文/论文初稿_通用模板.docx"
+    outputPath = process.env.THESIS_OUTPUT || "./example_output.docx"
   } = options;
 
   const mainHeader = new Header({

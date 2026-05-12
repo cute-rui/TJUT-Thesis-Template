@@ -4,8 +4,8 @@
   "description": "基于Node.js与docx库的毕业论文自动化生成系统，用于将结构化数据一键排版为符合学术规范的Word文档。",
   "main": "generate_thesis.js",
   "scripts": {
-    "start": "node example.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "example": "node generate_thesis.example.js",
+    "start": "node generate_thesis.js"
   },
   "keywords": [
     "docx",
@@ -14,7 +14,7 @@
     "generator"
   ],
   "author": "",
-  "license": "ISC",
+  "license": "WTFPL",
   "packageManager": "pnpm@10.32.1",
   "dependencies": {
     "docx": "^9.6.1",

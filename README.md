@@ -1,79 +1,95 @@
-# 天津理工大学论文模板生成项目
+# 天津理工大学论文模板
 
-本项目是一个基于 Node.js 与 `docx` 库的论文文档生成模板，主要用于生成符合 **天津理工大学论文格式要求** 的 Word 文档。模板并不限定学科方向，文、理、工、管、艺等各学科论文均可以在本项目基础上填写正文内容并生成论文文档。
+基于 Node.js + `docx` 库，通过代码生成符合**天津理工大学格式要求**的论文 Word 文档。
 
-> **重要提示：** `generate_thesis.js` 是本项目中完整的天津理工大学论文格式模板。若希望获得格式正确、结构完整的正式论文文档，应直接修改 `generate_thesis.js`，并在其中填充题名、摘要、目录、正文、图表、公式、参考文献、致谢等内容。
+> **核心思路：** 用代码代替手动排版，实现论文格式的统一维护和反复生成。
 
-## 项目来源与定位
+## 项目结构
 
-本项目中的 JavaScript 模板是依照 **Anthropic docx skill** 的文档生成思路衍生而来，并结合天津理工大学论文格式要求进行了本地化组织。项目的核心目标是通过代码方式生成论文 Word 文档，减少手动排版过程中的重复劳动。与直接在 Word 中手动调整格式相比，代码化模板更适合反复生成、批量修改和统一维护论文格式。
+| 文件 | 说明 |
+| --- | --- |
+| **`generate_thesis.js`** | ⭐ **正式论文模板** — 直接在此文件中填充**题名、摘要、目录、正文、图表、公式、参考文献、致谢**等全部内容 |
+| `generate_thesis.example.js` | 功能演示，仅供学习函数调用方式（格式不完整，勿用于正式论文） |
+| `图/` | 论文插图资源目录 |
 
-本项目推荐使用 **pnpm** 作为 Node.js 包管理器。`pnpm` 的安装与使用方式请参考官方文档：[pnpm Installation](https://pnpm.io/installation)。相比将依赖和生成逻辑分散到多个临时脚本中，建议尽量在现有 JavaScript 模板结构内维护正文、图表、公式和参考文献内容。
-
-| 文件或目录 | 作用 | 使用建议 |
-| --- | --- | --- |
-| `generate_thesis.js` | 完整的天津理工大学论文格式模板与生成逻辑 | **正式写论文时应优先直接修改此文件**，并在其中填充完整正文内容。 |
-| `example.js` | 模板调用示例文件 | 仅用于演示如何调用部分模板能力，部分格式不完全与 `generate_thesis.js` 保持一致。 |
-| `图/` | 图片资源目录 | 可存放论文中需要插入的图片，例如 `喜多喜多.gif`。 |
-| `图片插入与生成说明.md` | 图片插入示例说明 | 用于了解如何在 `example.js` 中插入图片。 |
-| `.gitignore` | Git 忽略规则 | 已忽略 `*.doc`、`*.docx` 和 `node_modules` 等生成物或依赖目录。 |
-
-## 关于 `example.js` 与 `generate_thesis.js` 的区别
-
-`example.js` 的定位是**调用示例**。它用于演示如何调用模板中的函数、如何组织摘要、正文、表格、公式、图片和参考文献等内容。为了便于阅读和调试，`example.js` 中的内容相对简化，并且其中部分格式处理不完全等同于 `generate_thesis.js`。
-
-因此，不能将 `example.js` 视为最终正式论文模板。若需要获得符合天津理工大学论文格式要求的正式文档，应以 `generate_thesis.js` 为准，并在 `generate_thesis.js` 中直接替换或填充论文正文内容。
-
-| 对比项 | `example.js` | `generate_thesis.js` |
-| --- | --- | --- |
-| 文件定位 | 调用示例与功能演示 | 完整论文格式模板 |
-| 格式完整性 | 部分格式为简化示例 | 以天津理工大学论文格式为目标进行完整组织 |
-| 推荐用途 | 学习用法、测试图片和表格等组件 | 正式生成论文文档 |
-| 正文填充方式 | 可作为参考，不建议作为最终模板 | **建议直接在此文件中填充正式正文内容** |
-
-## 推荐工具链
-
-本项目建议以 JavaScript 生态为主进行维护，包管理器统一使用 **pnpm**。若需要进行文档转换、文本搜索或批量定位内容，可额外安装 Pandoc 与 ripgrep。Pandoc 适合处理 Markdown、Word、HTML、LaTeX 等文档格式转换，ripgrep 适合在项目中快速搜索变量、标题、章节名和函数调用。
-
-| 工具 | 推荐用途 | 下载或文档地址 |
-| --- | --- | --- |
-| `pnpm` | 安装和管理 Node.js 依赖 | [pnpm Installation](https://pnpm.io/installation) |
-| `Pandoc` | 文档格式转换与辅助检查 | [jgm/pandoc Releases](https://github.com/jgm/pandoc/releases) |
-| `ripgrep` | 快速检索项目文本与代码 | [BurntSushi/ripgrep Releases](https://github.com/BurntSushi/ripgrep/releases) |
-
-> **编写提示：** 在维护本模板时，应尽可能不要使用 Python 对 `.docx` 文件进行拆包、解包或手工修改压缩包内部 XML。正式内容应优先通过 `generate_thesis.js` 中的模板函数、段落函数、表格函数、图片函数和公式函数生成，以减少 Word 内部结构损坏或格式漂移的风险。
-
-## 推荐写作流程
-
-正式写作时，建议先阅读 `generate_thesis.js` 的结构，确认其中各部分对应论文的哪些章节。随后将自己的论文题名、摘要、关键词、正文标题、正文段落、图表、公式、参考文献和致谢内容直接填入 `generate_thesis.js` 中。这样生成的文档会尽量保持完整的天津理工大学论文格式。
-
-如果只是想了解函数调用方式，或者想快速测试图片、表格、公式等局部功能，可以运行 `example.js`。但是，`example.js` 的作用是演示，不应替代 `generate_thesis.js` 作为正式论文生成入口。
-
-## 运行方式
-
-请在项目根目录下使用 `pnpm` 安装依赖并运行脚本。若依赖已经安装，可以直接运行生成命令。
+## 快速开始
 
 ```powershell
-Set-Location 'F:\论文模板'
 pnpm install
-node .\generate_thesis.js
+pnpm start           # 生成正式论文
+pnpm run example     # 运行示例（可选）
 ```
 
-若只需要运行示例文件，可以执行以下命令：
+生成的 `.docx` 文件已被 `.gitignore` 排除，不会进入版本控制。
+
+## 写作流程
+
+1. 阅读 `generate_thesis.js` 的结构，了解各章节对应位置
+2. **直接在 `generate_thesis.js` 中填充题名、摘要、目录、正文、图表、公式、参考文献、致谢等内容**
+3. 执行 `pnpm start` 生成 Word 文档
+4. **保持原有格式函数、分页逻辑和标题层级不变**，仅替换正文内容
+
+> [!WARNING]
+> 不要使用 Python 拆包 `.docx` 或手动修改其内部 XML，以免结构损坏。所有内容应通过模板函数生成。
+
+## 关于图表标题字体
+
+> [!NOTE]
+> 天津理工大学本科毕业设计说明书（毕业论文）撰写规范（2025）并未明确说明**图和表的标题在包含英文时是否应使用楷体**。模板默认将图表标题的 `font` 设为 `TITLE_FONT_PURE_KAITI`（即纯楷体 `"楷体"`），英文部分也会显示为楷体。
+>
+> 如果希望英文部分使用 **Times New Roman** 而中文部分保持楷体，可在 `generate_thesis.js` 中将 `figure()` 和 `tableCaption()` 函数内的 `font` 从 `TITLE_FONT_PURE_KAITI` 更改为 `KAITI`：
+>
+> ```js
+> // 修改前（默认）
+> new TextRun({ text: title, font: TITLE_FONT_PURE_KAITI, size: WU_HAO })
+>
+> // 修改后（英文使用 Times New Roman）
+> new TextRun({ text: title, font: KAITI, size: WU_HAO })
+> ```
+
+## 工具链
+
+| 工具 | 用途 | 链接 |
+| --- | --- | --- |
+| **pnpm** | 包管理器（必需） | [pnpm.io](https://pnpm.io/installation) |
+| Pandoc | 文档格式转换（可选） | [GitHub](https://github.com/jgm/pandoc/releases) |
+| ripgrep | 项目内容检索（可选） | [GitHub](https://github.com/BurntSushi/ripgrep/releases) |
+
+## 建议安装的 MCP 与 Skills
+
+配合 AI 编码助手（如 Claude）使用时，推荐安装以下 MCP 服务器和 Skills 以提升论文写作效率：
+
+### Skills
+
+| 名称 | 用途 | 链接 |
+| --- | --- | --- |
+| **docx** | Anthropic 官方 docx 技能，支持 Word 文档的创建、编辑与分析 | [GitHub](https://github.com/anthropics/skills) |
+| **cnki-skills** | 知网相关技能，辅助中文文献检索与引用 | [GitHub](https://github.com/cookjohn/cnki-skills) |
+
+### MCP 服务器
+
+| 名称 | 用途 | 链接 |
+| --- | --- | --- |
+| **chrome-devtools-mcp** | 通过 Chrome DevTools 协议调试和操控浏览器 | [GitHub](https://github.com/ChromeDevTools/chrome-devtools-mcp) |
+| **paper-search-mcp** | 学术论文搜索（支持 Semantic Scholar、arXiv 等） | [GitHub](https://github.com/openags/paper-search-mcp) |
+
+> [!WARNING]
+> `paper-search-mcp` 的 PyPI 源已过时，**必须**使用 git 方式安装：
+> ```
+> uvx --from git+https://github.com/openags/paper-search-mcp.git paper-search-mcp
+> ```
+
+## 阅读批注（Comments）
+
+当导师在 Word 文档中添加修改批注后，可通过 Pandoc 将 `.docx` 转为 Markdown，批注会以特定格式保留在文本中，再用 ripgrep 搜索：
 
 ```powershell
-Set-Location 'F:\论文模板'
-node .\example.js
+# 1. 转换为 Markdown（保留批注）
+pandoc 论文初稿.docx -t markdown --wrap=none -o 论文初稿.md
+
+# 2. 搜索批注内容
+rg "comment-start|comment-end|\[.*\]\{\.comment-start\}" 论文初稿.md
 ```
 
-运行后会生成 Word 文档。由于 `.gitignore` 已包含 `*.doc` 与 `*.docx`，生成的 Word 文件默认不会被纳入 Git 版本控制。
-
-## 正式论文内容填写建议
-
-在 `generate_thesis.js` 中填写内容时，应优先保持原有结构，不建议随意删除格式函数、分页逻辑、标题层级、目录生成逻辑和参考文献格式。论文正文可以按照章节逐步填充，例如第一章绪论、第二章相关理论、第三章系统设计、第四章实现与测试、第五章总结与展望等。对于非工科或非系统实现类论文，也可以将这些章节名称替换为本学科常用结构，例如研究背景、文献综述、研究方法、实证分析、结论与建议等。
-
-> **再次强调：** 本模板适用于天津理工大学各学科论文，不只是理工科论文。若要获得格式正确的正式论文，请直接修改 `generate_thesis.js`，把论文正文内容填入该文件，而不要仅依赖 `example.js`。
-
-## 维护说明
-
-项目中生成的 `.doc` 与 `.docx` 文件属于输出结果，通常可以通过脚本重新生成，因此已加入 `.gitignore`。源代码、模板脚本、图片资源和 Markdown 说明文档则建议保留在项目中，便于后续维护和复用。
+> [!WARNING]
+> 尽可能**不要通过 Python 解包 `.docx`** 来查看文件内容或批注，以免损坏文档内部 XML 结构。应始终使用 Pandoc 进行格式转换。
