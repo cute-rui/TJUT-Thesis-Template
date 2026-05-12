@@ -35,17 +35,35 @@ pnpm run example     # 运行示例（可选）
 ## 关于图表标题字体
 
 > [!NOTE]
-> 天津理工大学本科毕业设计说明书（毕业论文）撰写规范（2025）并未明确说明**图和表的标题在包含英文时是否应使用楷体**。模板默认将图表标题的 `font` 设为 `TITLE_FONT_PURE_KAITI`（即纯楷体 `"楷体"`），英文部分也会显示为楷体。
+> 天津理工大学本科毕业设计说明书（毕业论文）撰写规范（2025）并未明确说明**图和表的标题在包含英文时是否应使用楷体**。模板默认使用 `KAITI`（中文楷体 + 英文 Times New Roman）。
 >
-> 如果希望英文部分使用 **Times New Roman** 而中文部分保持楷体，可在 `generate_thesis.js` 中将 `figure()` 和 `tableCaption()` 函数内的 `font` 从 `TITLE_FONT_PURE_KAITI` 更改为 `KAITI`：
+> 如果希望英文部分**也显示为楷体**，可在 `figure()` 和 `tableCaption()` 函数内将 `font` 从 `KAITI` 更改为 `TITLE_FONT_PURE_KAITI`（纯楷体）：
 >
 > ```js
-> // 修改前（默认）
-> new TextRun({ text: title, font: TITLE_FONT_PURE_KAITI, size: WU_HAO })
->
-> // 修改后（英文使用 Times New Roman）
+> // 修改前（默认：英文 Times New Roman + 中文楷体）
 > new TextRun({ text: title, font: KAITI, size: WU_HAO })
+>
+> // 修改后（全部使用楷体）
+> new TextRun({ text: title, font: TITLE_FONT_PURE_KAITI, size: WU_HAO })
 > ```
+
+## 自定义字体名称
+
+> [!TIP]
+> 如果需要使用其他变体的宋体、楷体等字体（如"华文宋体"、"华文楷体"、"仿宋"等），可直接修改 `generate_thesis.js` **开头的 `const` 定义**：
+>
+> ```js
+> // 默认定义
+> const SONGTI = { ascii: TNR, hAnsi: TNR, eastAsia: "宋体", cs: TNR };
+> const HEITI  = { ascii: TNR, hAnsi: TNR, eastAsia: "黑体", cs: TNR };
+> const KAITI  = { ascii: TNR, hAnsi: TNR, eastAsia: "楷体", cs: TNR };
+>
+> // 示例：改用 GB2312 / 小标宋字体
+> const SONGTI = { ascii: TNR, hAnsi: TNR, eastAsia: "方正小标宋_GBK", cs: TNR };
+> const KAITI  = { ascii: TNR, hAnsi: TNR, eastAsia: "楷体_GB2312", cs: TNR };
+> ```
+>
+> 修改后，模板中所有引用这些常量的地方会自动应用新字体，无需逐处更改。
 
 ## 工具链
 

@@ -321,9 +321,9 @@ function figure(number, title, opts = {}) {
       alignment: AlignmentType.CENTER,
       spacing: { before: 0, after: 0, line: 360 },
       children: [
-        new TextRun({ text: "图", font: TITLE_FONT_PURE_KAITI, size: WU_HAO }),
+        new TextRun({ text: "图", font: KAITI, size: WU_HAO }),
         new TextRun({ text: `${number} `, font: TNR, size: WU_HAO }),
-        new TextRun({ text: title, font: TITLE_FONT_PURE_KAITI, size: WU_HAO })
+        new TextRun({ text: title, font: KAITI, size: WU_HAO })
       ]
     }),
     empty(),
@@ -369,9 +369,9 @@ function tableCaption(number, title) {
     alignment: AlignmentType.CENTER,
     spacing: { before: 240, after: 120, line: 360 },
     children: [
-      new TextRun({ text: "表", font: TITLE_FONT_PURE_KAITI, size: WU_HAO }),
+      new TextRun({ text: "表", font: KAITI, size: WU_HAO }),
       new TextRun({ text: `${number} `, font: TNR, size: WU_HAO }),
-      new TextRun({ text: title, font: TITLE_FONT_PURE_KAITI, size: WU_HAO })
+      new TextRun({ text: title, font: KAITI, size: WU_HAO })
     ]
   });
 }
